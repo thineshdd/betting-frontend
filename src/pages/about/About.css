@@ -1,0 +1,87 @@
+.flex-container-about {
+    padding: 20px;
+}
+.flex-about-item {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+.flex-about-list.image-center {
+    text-align: center;
+}
+.flex-about-list {
+    flex: 1 1 calc(50% - 20px);
+    padding: 0px;
+}
+
+
+
+span.span-date {
+    color: #f50050;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.about-heading {
+    font-size: 50px;
+    font-weight: 700;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    line-height: 1.2;
+}
+.para-about {
+    line-height: 1.6;
+    color: #797e87;
+    margin-bottom: 10px;
+}
+.betnowbhn {
+    background-color: #f50050;
+    border-radius: 6px;
+    padding: 10px 18px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+    box-shadow: 0 4px 8px 0 rgba(48, 48, 48, 0.25);
+    border: 0;
+    margin-top: 30px;
+}
+
+span.svgspan {
+    vertical-align: middle;
+    padding-left: 10px;
+}
+
+
+.flex-container-card {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.flex-about-card {
+    flex: 1 1 calc(24% - 10px);
+}
+.card-design-offers {
+    margin: 20px;
+    display: flex;
+    border-bottom: 2px solid rgba(48, 48, 48, 0.1);
+    /* padding: 16px; */
+    justify-content: space-between;
+    flex-direction: column;
+    
+    border-radius: 10px;
+    box-shadow: 0 0 2px 0 rgba(48, 48, 48, 0.1), 0 4px 4px 0 rgba(48, 48, 48, 0.1);
+}
+
+.card-design-content {
+    padding: 20px;
+}
+.card-design-para {
+    line-height: 1.4;
+    color: #797e87;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.container-betting-tools {
+    padding: 20px;
+}
