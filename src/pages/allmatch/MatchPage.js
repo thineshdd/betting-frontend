@@ -84,8 +84,7 @@ const MatchPage = () => {
                 const results = await Promise.all(fetchPromises);
         
                 // Flatten the results array (if needed)
-                const allMatches = results.flat(); // Combine all match data into a single array
-        
+                const allMatches = results.flat(); 
                 // Update state with all fetched matches
                 setMatches(allMatches); 
                 setFilteredMatches(allMatches); // Initially, display all matches
