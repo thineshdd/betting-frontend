@@ -22,7 +22,7 @@ function Leaguelist() {
         <>
 
             <Helmet>
-                <title>Leaguelist Page</title>
+                <title>League list match</title>
                 <meta name="description" content="This is the home page of my React application, where you can find the latest updates and news." />
             </Helmet>
 
