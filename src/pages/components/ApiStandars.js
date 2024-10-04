@@ -6,14 +6,20 @@ import './Components.css';
 
  // Replace with your full API URL
 
-const ApiStandars = () => {
+const ApiStandars = ( {selectedSeason}) => {
 
     const [standings, setStandings] = useState([]);
     const [selectedGroup, setSelectedGroup] = useState('Eastern Conference'); // Default group
 
-    const Allstandard = "/api/season/13/statics/standings";
+
 
     useEffect(() => {
+
+        if (!selectedSeason) return;
+
+
+        const Allstandard = `/api/season/${selectedSeason.id}/statics/standings`; 
+        console.log('Current Allstandard:', Allstandard);
         // Fetch standings data from the API
         fetch(Allstandard, { method: 'POST' })
             .then(response => response.json())
@@ -29,7 +35,7 @@ const ApiStandars = () => {
                 setStandings(allStandings);
             })
             .catch(error => console.error('Error fetching standings:', error));
-    }, []);
+    }, [selectedSeason]);
 
 
     const filteredStandings = standings.filter(team => team.group === selectedGroup);

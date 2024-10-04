@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 
 
@@ -16,7 +16,7 @@ import LeagueStanded from "../../pages/components/LeagueStanded";
 
 function Leaguelist() {
 
-
+    const [selectedSeason, setSelectedSeason] = useState(null); 
     return (
 
         <>
@@ -32,9 +32,10 @@ function Leaguelist() {
                 <div className="container-score">
 
                     <div className="column-score large">
-                       <Leaguebanner/>
-                       <LeagueStanded/>
-                       <Matches/>
+                       <Leaguebanner setSelectedSeason={setSelectedSeason} selectedSeason={selectedSeason} />
+                   
+                       {selectedSeason && <LeagueStanded selectedSeason={selectedSeason} />}
+                       {selectedSeason && <Matches selectedSeason={selectedSeason} />}
                        {/* <Leagueinfo/> */}
                        
                     </div>

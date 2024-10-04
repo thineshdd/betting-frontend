@@ -4,109 +4,92 @@ import m1 from '../../assets/imageapi/m1.png'; // Placeholder image for the leag
 
 const MatchPage = () => {
     const { id } = useParams(); // Grabs the URL parameter (id)
+    const AllSeason = `/api/season/${id}/game`; 
 
-    const AllSeason = `/api/league/${id}/season`; 
-    
-    const [season, setSeason] = useState([]); // State for the season data
+    const [matches, setMatches] = useState([]); // State for all match data
+    const [filteredMatches, setFilteredMatches] = useState([]); // State for paginated matches
+    const [currentMonth, setCurrentMonth] = useState(new Date().getMonth() + 1); // Current month
+    const [currentPage, setCurrentPage] = useState(1); // State for pagination
     const [error, setError] = useState(null); // State for handling errors
-    const [matches, setMatches] = useState([]); // State for match data
-    const [filteredMatches, setFilteredMatches] = useState([]); // State for filtered match data
-    const [selectedMonth, setSelectedMonth] = useState(new Date().toISOString().slice(5, 7)); // Default to current month
 
-    const months = [
-        { value: "01", label: "January" },
-        { value: "02", label: "February" },
-        { value: "03", label: "March" },
-        { value: "04", label: "April" },
-        { value: "05", label: "May" },
-        { value: "06", label: "June" },
-        { value: "07", label: "July" },
-        { value: "08", label: "August" },
-        { value: "09", label: "September" },
-        { value: "10", label: "October" },
-        { value: "11", label: "November" },
-        { value: "12", label: "December" }
-    ];
+    const matchesPerPage = 15;
 
     // Fetch the season data based on league id
     useEffect(() => {
-        setError(null); // Reset error state before fetching new data
-        fetch(AllSeason, { method: 'POST' }) 
-            .then(response => {
+        const fetchSeasons = async () => {
+            setError(null); // Reset error state before fetching new data
+            try {
+                const response = await fetch(AllSeason, { method: 'POST' });
                 if (!response.ok) {
                     throw new Error("Network response was not ok");
                 }
-                return response.json();
-            })
-            .then(json => {
-                console.log('Season data:', json);
+                const json = await response.json();
                 if (json && json.data && json.data.length > 0) {
-                    setSeason(json.data); // Set the season data from the API response
+                    setMatches(json.data); // Store all matches
+                    filterMatchesForMonth(json.data, currentMonth); // Filter matches for the current month initially
                 } else {
                     setError('No league data found');
                 }
-            })
-            .catch(err => {
+            } catch (err) {
                 setError('Error fetching league data');
                 console.error('Fetch error:', err);
-            });
-    }, [id]);
-
-    // Fetch match data based on the first season (after season data is fetched)
-    useEffect(() => {
-        const fetchMatches = async () => {
-            if (season.length > 0) {
-                // Create an array of promises to fetch matches for each season
-                const fetchPromises = season.map(async (seasonItem) => {
-                    const AllLeagueUrl = `/api/season/${seasonItem.id}/game`; // Use the current season ID for fetching matches
-                    
-                    console.log('Fetching matches for season ID:', seasonItem.id);
-                    console.log('AllLeagueUrl ID:', AllLeagueUrl);
-        
-                    try {
-                        const response = await fetch(AllLeagueUrl, { method: 'POST' });
-                        const json = await response.json();
-        
-                        if (json.status === "true" && json.data) {
-                            console.log('Selected matches for season ID:', seasonItem.id, json.data); 
-                            return json.data; // Return the data for this season
-                        } else {
-                            console.error(`No match data found for season ID: ${seasonItem.id}`);
-                            return []; // Return an empty array if no data found
-                        }
-                    } catch (error) {
-                        console.error(`Error fetching match data for season ID: ${seasonItem.id}`, error);
-                        return []; // Return an empty array on error
-                    }
-                });
-        
-                // Wait for all promises to resolve
-                const results = await Promise.all(fetchPromises);
-        
-                // Flatten the results array (if needed)
-                const allMatches = results.flat(); 
-                // Update state with all fetched matches
-                setMatches(allMatches); 
-                setFilteredMatches(allMatches); // Initially, display all matches
             }
         };
-        
 
-        fetchMatches(); // Call the function to fetch matches
-    }, [season]);
+        fetchSeasons();
+    }, [id]);
 
-    // Filter matches based on the selected month
-    useEffect(() => {
-        if (selectedMonth && matches.length > 0) {
-            const filtered = matches.filter(match => {
-                const matchMonth = match.date.split("-")[1]; // Extract month from match date (format: YYYY-MM-DD)
-                return matchMonth === selectedMonth;
-            });
-            setFilteredMatches(filtered);
+    // Filter matches for a specific month
+    const filterMatchesForMonth = (allMatches, month) => {
+        const monthMatches = allMatches.filter(match => {
+            const matchMonth = new Date(match.date).getMonth() + 1; // Get match month (1-12)
+            return matchMonth === month;
+        });
+        setFilteredMatches(monthMatches);
+        setCurrentPage(1); // Reset pagination to first page
+    };
+
+    // Get current matches for pagination
+    const indexOfLastMatch = currentPage * matchesPerPage;
+    const indexOfFirstMatch = indexOfLastMatch - matchesPerPage;
+    const currentMatches = filteredMatches.slice(indexOfFirstMatch, indexOfLastMatch);
+
+    // Handle pagination (Next)
+    const handleNext = () => {
+        if (currentPage * matchesPerPage >= filteredMatches.length) {
+            // If we've reached the end of the current month's data, move to the next month
+            goToNextMonth();
         } else {
-            setFilteredMatches([]); // Clear the filtered matches if no data for the selected month
+            setCurrentPage(prevPage => prevPage + 1); // Go to the next page of the current month
         }
-    }, [selectedMonth, matches]);
+    };
+
+    // Handle pagination (Previous)
+    const handlePrevious = () => {
+        if (currentPage === 1) {
+            // If on the first page of the current month, move to the previous month
+            goToPreviousMonth();
+        } else {
+            setCurrentPage(prevPage => prevPage - 1); // Go to the previous page of the current month
+        }
+    };
+
+    // Go to the next month (loop forward)
+    const goToNextMonth = () => {
+        const newMonth = currentMonth === 12 ? 1 : currentMonth + 1; // Loop back to January if it's December
+        setCurrentMonth(newMonth);
+        filterMatchesForMonth(matches, newMonth); // Filter the matches for the new month
+    };
+
+    // Go to the previous month (loop backward)
+    const goToPreviousMonth = () => {
+        const newMonth = currentMonth === 1 ? 12 : currentMonth - 1; // Loop back to December if it's January
+        setCurrentMonth(newMonth);
+        filterMatchesForMonth(matches, newMonth); // Filter the matches for the new month
+    };
+
+    // Check if there are matches for the current month
+    const hasMatchesForCurrentMonth = filteredMatches.length > 0;
 
     if (error) {
         return <div>{error}</div>; // Display any error messages
@@ -120,35 +103,22 @@ const MatchPage = () => {
                         <div className="imageflex">
                             {/* Placeholder image for the league */}
                             <img src={m1} alt="League" width="36" height="36" className="league-imageflex" />
-                            <h4 className="league-heading-sub">Matches</h4>
+                            <h4 className="league-heading-sub">Matches for {currentMonth}</h4>
                         </div>
                     </div>
 
-                    <div className="month-dropdown">
-                        <label htmlFor="month-select">Filter by Month:</label>
-                        <select
-                            id="month-select"
-                            value={selectedMonth}
-                            onChange={e => setSelectedMonth(e.target.value)}
-                        >
-                            <option value="">All Months</option>
-                            {months.map(month => (
-                                <option key={month.value} value={month.value}>
-                                    {month.label}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
-                    {/* Check if there are any filtered matches */}
-                    {filteredMatches.length > 0 ? (
+                    {/* Check if there are any matches */}
+                    {currentMatches.length > 0 ? (
                         <div className="league-match-data-single">
-                            {filteredMatches.map(match => (
+                            {currentMatches.map(match => (
                                 <div className="accordion-flex" key={match.id}>
                                     <div className="accordion-flex-iteam accordion-flex-grow">
                                         <div className="accordion-favriote-row">
                                             <div className="accordion-sub-inner1">
-                                                {match.date.split(' ')[0]} {/* Displaying the date part */}
+                                                <div className="match-date">
+                                                    {match.date ? match.date.split(' ')[0] : "Date not available"}
+                                                </div>
+                                                <div className="match-status">{match.status}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -156,26 +126,31 @@ const MatchPage = () => {
                                         <div className="accordion-sub-iteam">
                                             <div className="accordion-sub-inner">
                                                 <div className="span-image-live">
-                                                    {match.name}
+                                                    {match.name || "Match name not available"}
                                                 </div>
-                                                <div className="span-live-count"></div>
-                                            </div>
-                                            <div className="accordion-sub-inner">
-                                                <div className="span-image-live"></div>
                                                 <div className="span-live-count"></div>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="accordion-flex-iteam-third accordion-flex-grow">
-                                        <Link to={`/football/match-summary/${match.id}`}> View </Link> 
+                                        <Link to={`/football/match-summary/${match.id}`}> View </Link>
                                     </div>
                                 </div>
                             ))}
                         </div>
                     ) : (
-                        // Display message if no matches found
                         <div className="no-matches">No matches found for the selected month.</div>
                     )}
+
+                    {/* Pagination */}
+                    <div className="pagination">
+                        <button onClick={handlePrevious} disabled={!hasMatchesForCurrentMonth}>
+                            Previous
+                        </button>
+                        <button onClick={handleNext} disabled={currentMatches.length === 0}>
+                            Next
+                        </button>
+                    </div>
                 </div>
             </div>
         </>

@@ -4,16 +4,22 @@ import './Components.css';
 
 import m1 from '../../assets/imageapi/m1.png';
 
-function Matches() {
+function Matches({ selectedSeason }) {
 
 
     const { id } = useParams(); // Get the league ID from the URL parameters
     const [matches, setMatches] = useState([]);
 
-    const AllLeagueUrl = `/api/season/${id}/game`; // Construct the API URL with the league ID
+    // const AllseasonUrl = `/api/season/${id}/game`; // Construct the API URL with the league ID
 
     useEffect(() => {
-        fetch(AllLeagueUrl, { method: 'POST' })
+
+        if (!selectedSeason) return;
+
+        const AllseasonUrl = `/api/season/${selectedSeason.id}/game`;
+        console.log('Current AllseasonUrl:', AllseasonUrl);
+
+        fetch(AllseasonUrl, { method: 'POST' })
             .then(response => response.json())
             .then(json => {
                 // Check if the response is valid and contains data
@@ -24,7 +30,7 @@ function Matches() {
                     const lastMonthString = lastMonth.toISOString().split('T')[0]; // Get last month's date in YYYY-MM-DD format
 
                     // Filter matches for today
-                    const todayMatches = json.data.filter(match => match.date.startsWith(todayString)); 
+                    const todayMatches = json.data.filter(match => match.date.startsWith(todayString));
 
                     let selectedMatches;
 
@@ -48,7 +54,7 @@ function Matches() {
                 }
             })
             .catch(error => console.error('Error fetching match data:', error));
-    }, [AllLeagueUrl]); // Add AllLeagueUrl to the dependency array
+    }, [selectedSeason]); // Add AllseasonUrl to the dependency array
 
     return (
         <div className="league-main-container">
@@ -65,7 +71,8 @@ function Matches() {
                             <div className="accordion-flex-iteam accordion-flex-grow">
                                 <div className="accordion-favriote-row">
                                     <div className="accordion-sub-inner1">
-                                        {match.date.split(' ')[0]} {/* Displaying the date part */}
+                                        <div className="match-date">    {match.date.split(' ')[0]} </div>
+                                        <div className="match-status"> {match.status}</div>
                                     </div>
                                 </div>
                             </div>
@@ -84,14 +91,20 @@ function Matches() {
                                 </div>
                             </div>
                             <div className="accordion-flex-iteam-third accordion-flex-grow">
-                                <Link to={`/football/match-summary/${match.id}`}> View </Link> 
+                                <Link to={`/football/match-summary/${match.id}`}> View </Link>
                             </div>
                         </div>
                     ))}
                 </div>
-                <div className="more-match">
+                {/* <div className="more-match">
 
                     <button className="more-match-btn">   <Link to={`/football/leaguelist/matches/${id}`}> More Button </Link> </button>
+                </div> */}
+
+                <div className="more-match">
+                    <Link to={`/football/leaguelist/matches/${selectedSeason.id}`}>
+                        <button className="more-match-btn"> More Button </button>
+                    </Link>
                 </div>
             </div>
         </div>
