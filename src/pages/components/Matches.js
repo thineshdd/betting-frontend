@@ -47,7 +47,7 @@ function Matches({ selectedSeason }) {
                         }
                     }
 
-                    console.log('Selected matches:', selectedMatches); // Log the filtered data
+                    //console.log('Selected matches:', selectedMatches); // Log the filtered data
                     setMatches(selectedMatches.slice(0, 10)); // Set only the first 10 matches
                 } else {
                     console.error('No match data found');

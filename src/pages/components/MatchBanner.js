@@ -45,22 +45,36 @@ function MatchBanner() {
     // Check if gameName exists and fallback if necessary
     const game = gameMatch["0"];
     const gameName = game ? game.name : 'Unknown Game';
-    
+
     // Ensure gameName exists before splitting
     const [homeTeam, awayTeam] = gameName ? gameName.split(" - ") : ["Home Team", "Away Team"];
-    
+
     const timeDate = new Date(game.time * 1000);
     const formattedTime = timeDate.toLocaleString('en-GB', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
     }); // Convert UNIX timestamp to a readable date
 
     const fullStatus = JSON.parse(game.full_status);
     const statusLong = fullStatus.long;
+
+    // Parse the result data
+    let homeScore = 0;
+    let awayScore = 0;
+
+    if (game.result) {
+        try {
+            const resultData = JSON.parse(game.result);
+            homeScore = resultData.fulltime.home || 0; // Default to 0 if not available
+            awayScore = resultData.fulltime.away || 0; // Default to 0 if not available
+        } catch (error) {
+            console.error('Error parsing result data:', error);
+        }
+    }
 
     return (
         <div className="league-main-container bg-image-color">
@@ -78,7 +92,7 @@ function MatchBanner() {
                     </div>
                     <div className="next-match-item">
                         <p className="matchscore">{statusLong}</p>
-                        <h2 className="livedata-score">2 <span className="livedata-score-arrow">-</span> 0</h2>
+                        <h2 className="livedata-score">{homeScore} <span className="livedata-score-arrow">-</span> {awayScore}</h2>
                         <p>{formattedTime}</p>
                     </div>
                     <div className="next-match-item">

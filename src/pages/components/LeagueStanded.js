@@ -1,82 +1,96 @@
 import React, { useState, useEffect } from 'react';
 import './Components.css';
-
-
-// import leaguebanner from '../../assets/imageapi/leaguebanner.png';
-// import leagueicon from '../../assets/imageapi/league-icon.png';
-// import friendship from '../../assets/imageapi/friendship.png';
 import standingsimage from '../../assets/imageapi/standing.svg';
 
-// import SummaryTAb from "./SummaryTab";
-// import ApiStandars from "./ApiStandars";
-// import RealAPI from "./RealAPI";
 function LeagueStanded({ selectedSeason }) {
-
     const [standings, setStandings] = useState([]);
-    const [selectedGroup, setSelectedGroup] = useState('Eastern Conference'); // Default group
+    const [selectedGroup, setSelectedGroup] = useState(''); // Default group is empty
+    const [groupNames, setGroupNames] = useState([]); // To store unique group names
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State to manage dropdown visibility
 
     useEffect(() => {
-
         if (!selectedSeason) return;
-
 
         const Allstandard = `/api/season/${selectedSeason.id}/statics/standings`;
         console.log('Current Allstandard:', Allstandard);
+
         // Fetch standings data from the API
         fetch(Allstandard, { method: 'POST' })
             .then(response => response.json())
             .then(json => {
-
                 console.log('API Response:', json);
-                // Assuming the response structure is similar to your static data
                 const apiData = json.data;
                 const parsedData = JSON.parse(apiData.data);
                 console.log('Parsed Standings Data:', parsedData);
-                const allStandings = parsedData[0].league.standings[0].concat(parsedData[0].league.standings[1]); // Combine the standings
-                console.log('All Standings:', allStandings);
+
+                const standings = parsedData[0].league.standings;
+
+                let allStandings = [];
+
+                if (standings.length === 1) {
+                    allStandings = standings[0]; // Use the first array
+                    setStandings(allStandings);
+                    setGroupNames([]); // Clear group names
+                    setSelectedGroup(''); // No selected group
+                } else {
+                    allStandings = standings.reduce((accumulator, currentArray) => accumulator.concat(currentArray), []);
+                    const uniqueGroups = [...new Set(allStandings.map(team => team.group))];
+                    setGroupNames(uniqueGroups);
+                    setSelectedGroup(uniqueGroups[0]);
+                }
+
                 setStandings(allStandings);
             })
             .catch(error => console.error('Error fetching standings:', error));
     }, [selectedSeason]);
 
+    // Filter standings by selected group if group names exist
+    const filteredStandings = groupNames.length > 0
+        ? standings.filter(team => team.group === selectedGroup)
+        : standings; // If no groups, just show all standings
 
-    const filteredStandings = standings.filter(team => team.group === selectedGroup);
-
+    const handleGroupSelect = (group) => {
+        setSelectedGroup(group);
+        setIsDropdownOpen(false); // Close the dropdown after selection
+    };
 
     return (
-
         <>
-
             <div className="league-main-container">
                 <div className="league-main-row">
                     <div className="league-center-title">
                         <div className="imageflex">
-                            <img src={standingsimage} alt="England" width="36" height="36" className="league-imageflex" />
-                            <h4 className="league-heading-sub">Standings </h4>
+                            <img src={standingsimage} alt="Standings" width="36" height="36" className="league-imageflex" />
+                            <h4 className="league-heading-sub">Standings</h4>
                         </div>
-
-
                     </div>
 
                     <div className="league-main-tabel">
-
                         <div className="tabsection-container">
-                            {/* <SummaryTAb /> */}
-                            {/* <ApiStandars/> */}
-                            {/* <RealAPI/> */}
-
                             <div>
+                                {groupNames.length > 0 && ( // Only show dropdown if there are multiple groups
+                                    <div className="custom-dropdown">
+                                        <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="dropdown-toggle">
+                                            {selectedGroup || 'Select Group'} 
+                                            {/* Show arrow based on dropdown state */}
+                                            {isDropdownOpen ? '  ▲' : ' ▼'}
+                                        </button>
+                                        {isDropdownOpen && (
+                                            <div className="dropdown-menu">
+                                                {groupNames.map((group, index) => (
+                                                    <div
+                                                        key={index}
+                                                        onClick={() => handleGroupSelect(group)}
+                                                        className="dropdown-item"
+                                                    >
+                                                        {group}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
 
-                                <div className="standing-btn">
-
-                                    <button onClick={() => setSelectedGroup('Eastern Conference')} className={`standing-button ${selectedGroup === 'Eastern Conference' ? 'active' : ''}`}
-                                    >
-                                        Eastern Conference
-                                    </button>
-                                    <button onClick={() => setSelectedGroup('Western Conference')} className={`standing-button ${selectedGroup === 'Western Conference' ? 'active' : ''}`}>
-                                        Western Conference
-                                    </button>
-                                </div>
                                 <div className="all-table-data">
                                     <div className="ptable">
                                         <table id="tablefull">
@@ -114,20 +128,24 @@ function LeagueStanded({ selectedSeason }) {
                                                         <td>{team.goalsDiff}</td>
                                                         <td>{team.points}</td>
                                                         <td>
-                                                            <div className="winsection">
-                                                                {team.form.split('').map((result, i) => (
-                                                                    <span
-                                                                        key={i}
-                                                                        className={
-                                                                            result === 'W' ? 'win' :
+                                                            {team.form ? (
+                                                                <div className="winsection">
+                                                                    {team.form.split('').map((result, i) => (
+                                                                        <span
+                                                                            key={i}
+                                                                            className={
+                                                                                result === 'W' ? 'win' :
                                                                                 result === 'L' ? 'lost' :
-                                                                                    result === 'D' ? 'draw' : ''
-                                                                        }
-                                                                    >
-                                                                        {result}
-                                                                    </span>
-                                                                ))}
-                                                            </div>
+                                                                                result === 'D' ? 'draw' : ''
+                                                                            }
+                                                                        >
+                                                                            {result}
+                                                                        </span>
+                                                                    ))}
+                                                                </div>
+                                                            ) : (
+                                                                <span></span> // Render an empty span if form is null
+                                                            )}
                                                         </td>
                                                     </tr>
                                                 ))}
@@ -137,7 +155,7 @@ function LeagueStanded({ selectedSeason }) {
 
                                     <div className="key-tabel">
                                         <div className="key-tabel-title">
-                                            key
+                                            Key
                                         </div>
                                         <div className="key-tabel-list">
                                             <ol className="tabel-ul">
@@ -146,31 +164,15 @@ function LeagueStanded({ selectedSeason }) {
                                                 <li className="tabel-li">Draw</li>
                                             </ol>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
-
                         </div>
-
-
-
-
                     </div>
-
-
-
-
                 </div>
-
             </div>
-
-
         </>
-
-
     );
-
 }
 
 export default LeagueStanded;

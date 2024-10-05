@@ -57,8 +57,12 @@ const MatchPage = () => {
     // Handle pagination (Next)
     const handleNext = () => {
         if (currentPage * matchesPerPage >= filteredMatches.length) {
-            // If we've reached the end of the current month's data, move to the next month
-            goToNextMonth();
+            // (currentPage * matchesPerPage >= filteredMatches.length) {
+            if (currentMonth !== 12) { // Prevent going past December
+                goToNextMonth();
+            }
+
+          
         } else {
             setCurrentPage(prevPage => prevPage + 1); // Go to the next page of the current month
         }
@@ -68,24 +72,33 @@ const MatchPage = () => {
     const handlePrevious = () => {
         if (currentPage === 1) {
             // If on the first page of the current month, move to the previous month
-            goToPreviousMonth();
+            if (currentMonth !== 1) { // Prevent going past January
+                goToPreviousMonth();
+            }
+            // if (currentMonth > 1) {
+            //     goToPreviousMonth();
+            // }
         } else {
             setCurrentPage(prevPage => prevPage - 1); // Go to the previous page of the current month
         }
     };
 
-    // Go to the next month (loop forward)
+    // Go to the next month (stop at December)
     const goToNextMonth = () => {
-        const newMonth = currentMonth === 12 ? 1 : currentMonth + 1; // Loop back to January if it's December
-        setCurrentMonth(newMonth);
-        filterMatchesForMonth(matches, newMonth); // Filter the matches for the new month
+        if (currentMonth < 12) {
+            const newMonth = currentMonth + 1;
+            setCurrentMonth(newMonth);
+            filterMatchesForMonth(matches, newMonth); // Filter the matches for the new month
+        }
     };
 
-    // Go to the previous month (loop backward)
+    // Go to the previous month (stop at January)
     const goToPreviousMonth = () => {
-        const newMonth = currentMonth === 1 ? 12 : currentMonth - 1; // Loop back to December if it's January
-        setCurrentMonth(newMonth);
-        filterMatchesForMonth(matches, newMonth); // Filter the matches for the new month
+        if (currentMonth > 1) {
+            const newMonth = currentMonth - 1;
+            setCurrentMonth(newMonth);
+            filterMatchesForMonth(matches, newMonth); // Filter the matches for the new month
+        }
     };
 
     // Check if there are matches for the current month
@@ -103,11 +116,11 @@ const MatchPage = () => {
                         <div className="imageflex">
                             {/* Placeholder image for the league */}
                             <img src={m1} alt="League" width="36" height="36" className="league-imageflex" />
-                            <h4 className="league-heading-sub">Matches for {currentMonth}</h4>
+                            <h4 className="league-heading-sub">All Matches </h4>
                         </div>
                     </div>
 
-                    {/* Check if there are any matches */}
+                    {/* Check if there are any matches for {currentMonth} */}
                     {currentMatches.length > 0 ? (
                         <div className="league-match-data-single">
                             {currentMatches.map(match => (
@@ -143,11 +156,11 @@ const MatchPage = () => {
                     )}
 
                     {/* Pagination */}
-                    <div className="pagination">
-                        <button onClick={handlePrevious} disabled={!hasMatchesForCurrentMonth}>
+                    <div className="pagination-btn">
+                        <button   className="pagination-button" onClick={handlePrevious}  disabled={currentMonth === 1} >
                             Previous
                         </button>
-                        <button onClick={handleNext} disabled={currentMatches.length === 0}>
+                        <button   className="pagination-button" onClick={handleNext}  disabled={currentMonth === 12} >
                             Next
                         </button>
                     </div>

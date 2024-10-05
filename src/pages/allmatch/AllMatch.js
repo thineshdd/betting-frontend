@@ -28,9 +28,7 @@ function AllMatch() {
                 <div className="container-score">
 
                     <div className="column-score large">
-                       <h1>
-                       All match
-                       </h1>
+                     
 
                        <MatchPage/>
                        

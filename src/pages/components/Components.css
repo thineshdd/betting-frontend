@@ -26,12 +26,13 @@
 .league-main-images {
     display: flex;
     align-items: start;
+    gap: 30px;
 }
 .league-main-bg {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-image: url(https://api.sofascore.app/api/v1/unique-tournament/17/image);
+    /* background-image: url(https://api.sofascore.app/api/v1/unique-tournament/17/image); */
     background-size: 100% 100%;
     background-position: center center;
     filter: blur(50px);
@@ -48,11 +49,18 @@
     z-index: 3;
 }
 .league-main-imageslist .league-images-nav {
-    padding: 10px;
+    /*   background: white;
     border: 1px solid #00000030;
-    border-radius: 5px;
-    background: white;
-    width: 60%;
+    border-radius: 5px; */
+    padding: 10px;
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+  
+}
+
+.league-main-imageslist {
+  width: 8%;
 }
 
 .league-heading {
@@ -678,7 +686,7 @@ progress::-moz-progress-bar {
   margin-top: 10px;
 }
 
-.pagination-controls {
+/* .pagination-controls {
   display: flex;
   justify-content: center;
   margin-top: 20px;
@@ -691,14 +699,14 @@ progress::-moz-progress-bar {
 
 .pagination-controls span {
   align-self: center;
-}
+} */
 
-.standing-btn {
+.pagination-btn {
   display: flex;
   gap: 20px;
 }
 
-.standing-button{
+.pagination-button{
 
   background: #f9f9f9;
   border: none;
@@ -714,7 +722,7 @@ progress::-moz-progress-bar {
 
 }
 
-.standing-button.active {
+.pagination-button.active {
   background-color: #282828;
   border-radius: 2px;
   color: #fff;
@@ -726,4 +734,100 @@ progress::-moz-progress-bar {
   align-items: center;
   gap: 20px;
   flex-wrap: wrap;
+}
+
+/* 
+.standing-dropdown {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  cursor: pointer;
+}
+.standing-dropdown-item {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  transition: background-color 0.3s ease;
+}
+
+
+.standing-dropdown-item.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+
+.standing-dropdown-item:hover {
+  background-color: #f0f0f0;
+} */
+
+
+.custom-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-toggle {
+  padding: 10px;
+  background-color: #f0f0f0; /* Change to your preferred color */
+  border: 1px solid #ccc;
+  cursor: pointer;
+  width: 170px;
+  text-align: left;
+}
+
+.dropdown-menu {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  z-index: 1;
+  width: 167px;
+}
+
+.dropdown-item {
+  cursor: pointer;
+  padding: 8px;
+  font-size: 14px;
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0; /* Highlight on hover */
+}
+
+
+.select-dropdown {
+  position: relative;
+
+}
+
+.select-dropdown select {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.select-dropdown select:focus {
+  outline: none;
+  border-color: #007bff; /* Add a blue border on focus */
+}
+
+.select-dropdown option {
+  padding: 5px 10px;
+  font-size: 16px;
+}
+.country-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.country-images {
+  padding-right: 10px;
+  vertical-align: middle;
 }

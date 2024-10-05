@@ -70,12 +70,24 @@ const LeagueData = () => {
 
                     // If there's a matching country, display the display_name
                     return matchingCountry ? (
-                        <div class="accordion-leguelist" key={index}>
+                        <div clasclassNames="accordion-leguelist" key={index}>
                             <div
                                 onClick={() => handleCountryClick(country)}
                                 style={{ cursor: 'pointer' }}  class="accordion-leguelist-heading"
                             >
                                 <div className="match-title-league">
+                                <span className="country-images">
+
+                                {matchingCountry && (
+                                            <img
+                                                src={`/bet-assets/site/image/country/${matchingCountry.code}.svg`}
+                                                alt={matchingCountry.display_name}
+                                                width="26"
+                                                height="26"
+                                                className="country-icon"
+                                            />
+                                        )}
+                                </span>
                                     {matchingCountry.display_name}
                                 </div>
                                 {/* Change the symbol based on whether the country is selected */}
