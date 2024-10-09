@@ -4,7 +4,7 @@ import m1 from '../../assets/imageapi/m1.png'; // Placeholder image for the leag
 
 const MatchPage = () => {
     const { id } = useParams(); // Grabs the URL parameter (id)
-    const AllSeason = `/api/season/${id}/game`; 
+    const AllSeason = `/api/season/${id}/game`;
 
     const [matches, setMatches] = useState([]); // State for all match data
     const [filteredMatches, setFilteredMatches] = useState([]); // State for paginated matches
@@ -62,7 +62,7 @@ const MatchPage = () => {
                 goToNextMonth();
             }
 
-          
+
         } else {
             setCurrentPage(prevPage => prevPage + 1); // Go to the next page of the current month
         }
@@ -123,33 +123,46 @@ const MatchPage = () => {
                     {/* Check if there are any matches for {currentMonth} */}
                     {currentMatches.length > 0 ? (
                         <div className="league-match-data-single">
-                            {currentMatches.map(match => (
-                                <div className="accordion-flex" key={match.id}>
-                                    <div className="accordion-flex-iteam accordion-flex-grow">
-                                        <div className="accordion-favriote-row">
-                                            <div className="accordion-sub-inner1">
-                                                <div className="match-date">
-                                                    {match.date ? match.date.split(' ')[0] : "Date not available"}
+                            {currentMatches.map(match => {
+
+                                const utcDateString = match.date.replace(' ', 'T') + 'Z'; // Convert to a valid ISO date format
+                                const theDate = new Date(Date.parse(utcDateString)); // Parse the date
+
+                                // Options for formatting the date and time
+                                const yearOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+                                const timeOptions = { hour: 'numeric', minute: '2-digit', hour12: true };
+
+                                // Format the date and time
+                                const formatTime = theDate.toLocaleTimeString(undefined, timeOptions);
+                                const formatDate = theDate.toLocaleDateString(undefined, yearOptions);
+
+
+                                return (
+                                    <div className="accordion-flex" key={match.id}>
+                                        <div className="accordion-flex-iteam accordion-flex-grow">
+                                            <div className="accordion-favriote-row">
+                                                <div className="accordion-sub-inner1">
+                                                    <div className="match-date">      <span className="live-date"> {formatDate} </span> - <span className="live-time"> {formatTime} </span> </div>
+                                                    <div className="match-status"> {match.status}</div>
                                                 </div>
-                                                <div className="match-status">{match.status}</div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className="accordion-flex-iteam accordion-flex-grow-big">
-                                        <div className="accordion-sub-iteam">
-                                            <div className="accordion-sub-inner">
-                                                <div className="span-image-live">
-                                                    {match.name || "Match name not available"}
+                                        <div className="accordion-flex-iteam accordion-flex-grow-big">
+                                            <div className="accordion-sub-iteam">
+                                                <div className="accordion-sub-inner">
+                                                    <div className="span-image-live">
+                                                        {match.name || "Match name not available"}
+                                                    </div>
+                                                    <div className="span-live-count"></div>
                                                 </div>
-                                                <div className="span-live-count"></div>
                                             </div>
                                         </div>
+                                        <div className="accordion-flex-iteam-third accordion-flex-grow">
+                                            <Link to={`/football/match-summary/${match.id}`}> View </Link>
+                                        </div>
                                     </div>
-                                    <div className="accordion-flex-iteam-third accordion-flex-grow">
-                                        <Link to={`/football/match-summary/${match.id}`}> View </Link>
-                                    </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     ) : (
                         <div className="no-matches">No matches found for the selected month.</div>
@@ -157,10 +170,10 @@ const MatchPage = () => {
 
                     {/* Pagination */}
                     <div className="pagination-btn">
-                        <button   className="pagination-button" onClick={handlePrevious}  disabled={currentMonth === 1} >
+                        <button className="pagination-button" onClick={handlePrevious} disabled={currentMonth === 1} >
                             Previous
                         </button>
-                        <button   className="pagination-button" onClick={handleNext}  disabled={currentMonth === 12} >
+                        <button className="pagination-button" onClick={handleNext} disabled={currentMonth === 12} >
                             Next
                         </button>
                     </div>

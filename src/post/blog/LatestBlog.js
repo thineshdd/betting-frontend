@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import ConfigUrl from './ConfigUrl';
 
 
 function LatestBlog() {
@@ -10,12 +11,12 @@ function LatestBlog() {
         const fetchPost = async () => {
             try {
                 const response = await fetch(
-                    'https://bettingpremier.ewallhost.com/blog/wp-json/custom/v2/blog'
+                        `${ConfigUrl.API_BASE_URL}/blog/wp-json/custom/v2/blog`
                 );
                 const jsonresult = await response.json();
 
                 if (response.ok) {
-                    const limitedPosts = jsonresult.slice(0, 8); // Limit to 4 posts
+                    const limitedPosts = jsonresult.slice(0, 10); // Limit to 4 posts
                     setPosts(limitedPosts); 
                 
                     // console.log(jsonresult);
@@ -39,7 +40,7 @@ function LatestBlog() {
             <div className="match">
                 <div className="match-header">
 
-                    <div className="match-tournament"> Recent Blog</div>
+                    <div className="match-tournament"> Recent  Blog</div>
                 </div>
                 {error && <p className="error-message">{error}</p>}
                 <div className="Recent-content-main">

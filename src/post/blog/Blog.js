@@ -4,6 +4,9 @@ import  LatestBlog from './LatestBlog';
 
 import './blog.css';
 
+import ConfigUrl from './ConfigUrl';
+
+
 
 function Blog() {
 
@@ -15,12 +18,17 @@ function Blog() {
         const fetchPost = async () => {
             try {
                 const response = await fetch(
-                    'https://bettingpremier.ewallhost.com/blog/wp-json/custom/v1/posts'
+                          `${ConfigUrl.API_BASE_URL}/blog/wp-json/custom/v1/posts`
+                         
                 );
+
+                   // 'https://bettingpremier.ewallhost.com/blog/wp-json/custom/v1/posts'
+
+
                 const jsonresult = await response.json();
 
                 if (response.ok) {
-                    const limitedPosts = jsonresult.slice(0, 3); // Limit to 4 posts
+                    const limitedPosts = jsonresult.slice(0, 4); // Limit to 4 posts
                     setPosts(limitedPosts);
 
                     // console.log(jsonresult);
@@ -99,7 +107,7 @@ function Blog() {
                                                                         {post.title}</h2>   </a>
                                                             </div>
                                                             <div>
-                                                                <p className="blog-para"> {post.content}</p>
+                                                                <p className="blog-para"> {post.content} </p>
                                                             </div>
 
 

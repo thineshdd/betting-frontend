@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import './blog.css';
 import '../../index.css';
 
+import ConfigUrl from './ConfigUrl';
+
 function Latest() {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState('');
@@ -10,7 +12,7 @@ function Latest() {
     const fetchPost = async () => {
       try {
         const response = await fetch(
-          'https://bettingpremier.ewallhost.com/blog/wp-json/custom/v1/posts'
+                 `${ConfigUrl.API_BASE_URL}/blog/wp-json/custom/v1/posts`
         );
         const jsonresult = await response.json();
 

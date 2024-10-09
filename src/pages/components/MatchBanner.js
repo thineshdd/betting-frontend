@@ -49,15 +49,36 @@ function MatchBanner() {
     // Ensure gameName exists before splitting
     const [homeTeam, awayTeam] = gameName ? gameName.split(" - ") : ["Home Team", "Away Team"];
 
-    const timeDate = new Date(game.time * 1000);
-    const formattedTime = timeDate.toLocaleString('en-GB', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false
-    }); // Convert UNIX timestamp to a readable date
+    // const timeDate = new Date(game.time * 1000);
+    // const formattedTime = timeDate.toLocaleString('en-GB', {
+    //     day: '2-digit',
+    //     month: '2-digit',
+    //     year: 'numeric',
+    //     hour: '2-digit',
+    //     minute: '2-digit',
+    //     hour12: true, // Use 12-hour format
+    //     hourCycle: 'h12'
+    // });
+
+    const utcDateString = game.date.replace(' ', 'T') + 'Z'; // "2024-03-03T03:00:00Z"
+
+    // Use Date.parse() to get the timestamp and create a Date object
+    const theDate = new Date(Date.parse(utcDateString));
+
+    // Format the date to local string
+    const formattedDate = theDate.toLocaleString();
+
+    const yearoption = { year: 'numeric', month: 'long', day: 'numeric' };
+    const timeOptions = { hour: 'numeric', minute: '2-digit', hour12: true };
+    const formatTime = theDate.toLocaleTimeString(undefined, timeOptions);
+    const formatDate = theDate.toLocaleDateString(undefined, yearoption);
+
+    console.log("Date:", formatDate);
+    console.log("Time:", formatTime);
+
+    console.log("date", formattedDate);
+
+
 
     const fullStatus = JSON.parse(game.full_status);
     const statusLong = fullStatus.long;
@@ -93,7 +114,7 @@ function MatchBanner() {
                     <div className="next-match-item">
                         <p className="matchscore">{statusLong}</p>
                         <h2 className="livedata-score">{homeScore} <span className="livedata-score-arrow">-</span> {awayScore}</h2>
-                        <p>{formattedTime}</p>
+                        <p><span className="live-date"> {formatDate} </span> <span className="live-time"> {formatTime} </span></p>
                     </div>
                     <div className="next-match-item">
                         <div className="next-match-title">

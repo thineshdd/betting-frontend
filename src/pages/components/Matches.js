@@ -66,35 +66,50 @@ function Matches({ selectedSeason }) {
                     </div>
                 </div>
                 <div className="league-match-data-single">
-                    {matches.map(match => (
-                        <div className="accordion-flex" key={match.id}>
-                            <div className="accordion-flex-iteam accordion-flex-grow">
-                                <div className="accordion-favriote-row">
-                                    <div className="accordion-sub-inner1">
-                                        <div className="match-date">    {match.date.split(' ')[0]} </div>
-                                        <div className="match-status"> {match.status}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="accordion-flex-iteam accordion-flex-grow-big">
-                                <div className="accordion-sub-iteam">
-                                    <div className="accordion-sub-inner">
-                                        <div className="span-image-live">
-                                            {match.name}
+                    {matches.map(match => {
+
+                        const utcDateString = match.date.replace(' ', 'T') + 'Z'; // Convert to a valid ISO date format
+                        const theDate = new Date(Date.parse(utcDateString)); // Parse the date
+
+                        // Options for formatting the date and time
+                        const yearOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+                        const timeOptions = { hour: 'numeric', minute: '2-digit', hour12: true };
+
+                        // Format the date and time
+                        const formatTime = theDate.toLocaleTimeString(undefined, timeOptions);
+                        const formatDate = theDate.toLocaleDateString(undefined, yearOptions);
+
+
+                        return (
+                            <div className="accordion-flex" key={match.id}>
+                                <div className="accordion-flex-iteam accordion-flex-grow">
+                                    <div className="accordion-favriote-row">
+                                        <div className="accordion-sub-inner1">
+                                            <div className="match-date">      <span className="live-date"> {formatDate} </span> - <span className="live-time"> {formatTime} </span> </div>
+                                            <div className="match-status"> {match.status}</div>
                                         </div>
-                                        <div className="span-live-count"></div>
-                                    </div>
-                                    <div className="accordion-sub-inner">
-                                        <div className="span-image-live"></div>
-                                        <div className="span-live-count"></div>
                                     </div>
                                 </div>
+                                <div className="accordion-flex-iteam accordion-flex-grow-big">
+                                    <div className="accordion-sub-iteam">
+                                        <div className="accordion-sub-inner">
+                                            <div className="span-image-live">
+                                                {match.name}
+                                            </div>
+                                            <div className="span-live-count"></div>
+                                        </div>
+                                        <div className="accordion-sub-inner">
+                                            <div className="span-image-live"></div>
+                                            <div className="span-live-count"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="accordion-flex-iteam-third accordion-flex-grow">
+                                    <Link to={`/football/match-summary/${match.id}`}> View </Link>
+                                </div>
                             </div>
-                            <div className="accordion-flex-iteam-third accordion-flex-grow">
-                                <Link to={`/football/match-summary/${match.id}`}> View </Link>
-                            </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
                 {/* <div className="more-match">
 

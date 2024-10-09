@@ -350,7 +350,7 @@ a.newlink {
 
 .match-date,
 .match-referee {
-    font-size: 12px;
+    font-size: 16px;
     color: #8a8f98;
 }
 
@@ -397,8 +397,8 @@ span.list-leagues {
 }
 
 li.list-leagues-item:hover {
-    transform: scale(1.1);
-    padding-left: 30px;
+    /* transform: scale(1.1); */
+    padding-left: 10px;
     cursor: pointer;
 }
 
@@ -529,7 +529,7 @@ img.rounded-image {
     border-bottom: 1px solid #d3dce6 !important;
 }
 
-.league-rows-iteam-match {
+.league-rows-iteam-match2 {
     flex: 1;
 }
 
@@ -538,7 +538,30 @@ img.rounded-image {
     align-items: center;
     justify-content: space-around;
     margin-bottom: 6px;
+    width: 100%;
 }
+
+.league-rows-iteam-match1 {
+    width: 30%;
+}
+.league-rows-iteam-match2{
+    width: 70%;
+}
+
+.league-match-img {
+    width: 50%;
+    text-align: left;
+}
+
+.league-match-score {
+    width: 50%;
+    text-align: center;
+}
+
+.match-status {
+    margin-top: 5px;
+}
+
 
 .button-span {
     padding: 5px 10px;
@@ -747,6 +770,139 @@ button.more-match-btn {
 button.more-match-btn a {
     color: white;
 }
+
+/* home blog code */
+
+img.recent-blog-image {
+    width: 100%;
+}
+
+.league-section-main {
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+/* .recent-post-main {
+    margin-bottom: 30px;
+} */
+
+.recent-post-container {
+    position: relative;
+}
+.recent-post-image-blog {
+    position: relative;
+}
+.recent-post-content-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    -ms-transform: translate(-50%, -50%);
+    background-image: linear-gradient(178deg, #1110 0, #161616 121%, #141313e6);
+    opacity: .9;
+}
+/* 
+linear-gradient(to bottom, rgb(17 17 17 / 0%) 0, rgb(17 17 17 / 26%) 50%, rgb(17 17 17 / 17%) 100%); */
+.recent-post-content{
+       position: absolute;
+       bottom: 0px;
+    left: 50%;
+     transform: translate(-50%, -20%);
+    -ms-transform: translate(-50%, -20%);
+    text-align: center;
+    width: 80%;
+}
+
+.recent-blog-tile {
+    font-size: 40px;
+    color: white;
+    line-height: 1.2;
+    font-weight: 700;
+
+}
+
+.recent-blog-para {
+    color: white;
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: 500;
+    font-weight: 400;
+    line-height: 1.3;
+}
+
+.recent-post-second-container {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.recent-post-second-row {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.recent-post-second-content {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.recent-home-second-content {
+    display: flex;
+    flex-direction: column;
+   
+}
+
+.home-blog-content{
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    gap: 8px;
+
+}
+p.second-blog-para {
+    line-height: 1.6;
+    color: #797e87;
+    margin-bottom: 10px;
+}
+
+
+h1.second-blog-tile {
+    font-size: 22px;
+    line-height: 1.3;
+    color: #262f3e;
+    font-weight: 700;
+}
+
+span.handicon-svg {
+    padding-left: 10px;
+    padding-right: 5px;
+}
+
+.home-post-row{
+    align-items: center;
+    display: flex;
+    gap: 20px;
+    justify-content: flex-start;
+}
+
+.blog-title-one{
+    
+}
+
+/* hpome blog code */
+
+.leagues-icon{
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+
 @media (max-width: 768px) {
 
     .column-score.large {
@@ -931,5 +1087,34 @@ button.more-match-btn a {
     .mvp-main-box-cont {
         max-width: 100% !important;
         width: inherit !important;
+    }
+
+    .match-title {
+        color: #fff;
+        font-size: 16px;
+    }
+    .league-main-imageslist {
+        width: 20%;
+    }
+    .league-heading {
+        color: #fff;
+        font-size: 20px;
+        line-height: 1.3;
+    }
+    .mtb {
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+
+    .recent-blog-tile {
+        color: #fff;
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+    .match-date, .match-referee {
+        color: #8a8f98;
+        font-size: 14px;
     }
 }
