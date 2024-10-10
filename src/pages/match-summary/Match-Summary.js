@@ -24,7 +24,7 @@ function MatchSummary() {
         <>
 
             <Helmet>
-                <title>Match summary Page - My React App</title>
+                <title>Match summary Page </title>
                 <meta name="description" content="This is the home page of my React application, where you can find the latest updates and news." />
             </Helmet>
 

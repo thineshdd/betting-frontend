@@ -28,22 +28,22 @@ function Topleagues() {
                         <ul>
                               <li className="list-leagues-item">
                                     <img src="/bet-assets/site/image/football/league/ligue-1-6700df567780c767.png" alt="France" className="leagues-icon"/>
-                                    <Link to="/football/leaguelist/17">    <span className="list-leagues"> Ligue 1 </span> </Link>
+                                    <Link to="/football/Ligue-1/17">    <span className="list-leagues"> Ligue 1 </span> </Link>
                                
                                 </li>
                                 <li className="list-leagues-item">
                                     <img src="/bet-assets/site/image/football/league/serie-a-6700e7c2ec98a866.png" alt="France" className="leagues-icon"/>
-                                    <Link to="/football/leaguelist/75">    <span className="list-leagues"> Serie A </span> </Link>
+                                    <Link to="/football/Serie-A/75">    <span className="list-leagues"> Serie A </span> </Link>
                                
                                 </li>
                                 <li className="list-leagues-item">
                                     <img src="/bet-assets/site/image/football/league/bundesliga-6700e838dcbfe410.png" alt="France" className="leagues-icon"/>
-                                    <Link to="/football/leaguelist/41">    <span className="list-leagues"> Bundesliga </span> </Link>
+                                    <Link to="/football/Bundesliga/41">    <span className="list-leagues"> Bundesliga </span> </Link>
                                
                                 </li>
                                 <li className="list-leagues-item">
                                     <img src="/bet-assets/site/image/football/league/la-liga-6700ea36273d0519.png" alt="France" className="leagues-icon"/>
-                                    <Link to="/football/leaguelist/104">    <span className="list-leagues"> La Liga </span> </Link>
+                                    <Link to="/football/La-Liga/104">    <span className="list-leagues"> La Liga </span> </Link>
                                
                                 </li>
 

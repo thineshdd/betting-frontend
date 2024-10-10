@@ -12,6 +12,8 @@ function MatchBanner() {
 
     const AllLeagueUrl = `/api/game/${id}`;
 
+    console.log("AllLeagueUrl", AllLeagueUrl);
+
     useEffect(() => {
         fetch(AllLeagueUrl, { method: 'POST' }) // Assuming it's a GET request
             .then(response => response.json())
@@ -98,6 +100,11 @@ function MatchBanner() {
     }
 
     return (
+        
+      <>
+      
+     
+     
         <div className="league-main-container bg-image-color">
             <div className="league-main-bg"></div>
             <div className="Next-match-container" key={game.id}>
@@ -128,6 +135,8 @@ function MatchBanner() {
                 <div className="Next-match-section-one"></div>
             </div>
         </div>
+
+        </>
     );
 }
 

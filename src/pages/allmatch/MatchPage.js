@@ -135,7 +135,10 @@ const MatchPage = () => {
                                 // Format the date and time
                                 const formatTime = theDate.toLocaleTimeString(undefined, timeOptions);
                                 const formatDate = theDate.toLocaleDateString(undefined, yearOptions);
+                                
+                                const formattedName = match.name.replace(/\s+/g, '-').replace(/-+/g, '-'); 
 
+                                console.log("slug",formattedName);
 
                                 return (
                                     <div className="accordion-flex" key={match.id}>
@@ -158,7 +161,7 @@ const MatchPage = () => {
                                             </div>
                                         </div>
                                         <div className="accordion-flex-iteam-third accordion-flex-grow">
-                                            <Link to={`/football/match-summary/${match.id}`}> View </Link>
+                                        <Link to={`/football/match-summary/${formattedName}/${match.id}`}>  View </Link>
                                         </div>
                                     </div>
                                 );

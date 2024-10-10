@@ -25,8 +25,8 @@ function Scorematch() {
     const [gameMatch, setGameMatch] = useState(null);
 
     const AllcountryUrl = "/api/country";
-   
-     // console.log('AllLeagueUrl:', AllLeagueUrl);
+
+    // console.log('AllLeagueUrl:', AllLeagueUrl);
     // console.log('AllSeason', AllSeason);
     // console.log('LeagueGame', LeagueGame);
     // Fetch country data
@@ -141,7 +141,7 @@ function Scorematch() {
     const fetchGameDetails = (matchId) => {
         const LeagueGame = `/api/game/${matchId}`;
 
-        console.log("LeagueGameURL",LeagueGame);
+        console.log("LeagueGameURL", LeagueGame);
 
         fetch(LeagueGame, { method: 'POST' })
             .then(response => response.json())
@@ -199,7 +199,10 @@ function Scorematch() {
                                     {matchingCountry ? matchingCountry.display_name : (league ? league.country_code : '')}
                                 </span>
                                 <h3 className="text-slide">
-                                <Link to={`/football/leaguelist/${league.id}`}>    {league.display_name} </Link>
+                                    <Link to={`/football/${league.display_name.replace(/\s+/g, '-')}/${league.id}`}>
+                                        {league.display_name}
+                                    </Link>
+
                                 </h3>
                             </div>
                         </div>
@@ -232,6 +235,11 @@ function Scorematch() {
                                     }
                                 }
 
+
+                                const formattedName = match.name.replace(/\s+/g, '-').replace(/-+/g, '-'); 
+
+                                console.log(formattedName);
+
                                 const [team1, team2] = match.name.split(" - ");
 
                                 const utcDateString = match.date.replace(' ', 'T') + 'Z'; // Convert to a valid ISO date format
@@ -259,8 +267,8 @@ function Scorematch() {
                                             <div className="league-match-data">
                                                 <div className="league-match-img">
                                                     <img src={matchlogo} style={{ width: '20px', height: 'auto' }} alt="match" />
-                                                    <Link to={`/football/match-summary/${match.id}`}>   <span>   {team1} </span> </Link>
-                                                  
+                                                    <Link to={`/football/match-summary/${formattedName}/${match.id}`}> <span>   {team1} </span> </Link>
+
                                                 </div>
                                                 <div className="league-match-score"> {homeScore} </div>
                                             </div>
@@ -268,7 +276,7 @@ function Scorematch() {
                                             <div className="league-match-data">
                                                 <div className="league-match-img">
                                                     <img src={matchlogo} style={{ width: '20px', height: 'auto' }} alt="match" />
-                                                    <Link to={`/football/match-summary/${match.id}`}>         <span>   {team2} </span>  </Link>
+                                                    <Link to={`/football/match-summary/${formattedName}/${match.id}`}>    <span>   {team2} </span>  </Link>
                                                 </div>
                                                 <div className="league-match-score"> {awayScore} </div>
                                             </div>
@@ -307,8 +315,8 @@ function ScorematchC() {
     const [gameMatch, setGameMatch] = useState(null);
 
     const AllcountryUrl = "/api/country";
-   
-     // console.log('AllLeagueUrl:', AllLeagueUrl);
+
+    // console.log('AllLeagueUrl:', AllLeagueUrl);
     // console.log('AllSeason', AllSeason);
     // console.log('LeagueGame', LeagueGame);
     // Fetch country data
@@ -423,7 +431,7 @@ function ScorematchC() {
     const fetchGameDetails = (matchId) => {
         const LeagueGame = `/api/game/${matchId}`;
 
-        console.log("LeagueGameURL",LeagueGame);
+        console.log("LeagueGameURL", LeagueGame);
 
         fetch(LeagueGame, { method: 'POST' })
             .then(response => response.json())
@@ -481,7 +489,10 @@ function ScorematchC() {
                                     {matchingCountry ? matchingCountry.display_name : (league ? league.country_code : '')}
                                 </span>
                                 <h3 className="text-slide">
-                                <Link to={`/football/leaguelist/${league.id}`}>    {league.display_name} </Link>
+                                    <Link to={`/football/${league.display_name.replace(/\s+/g, '-')}/${league.id}`}>
+                                        {league.display_name}
+                                    </Link>
+
                                 </h3>
                             </div>
                         </div>
@@ -500,6 +511,8 @@ function ScorematchC() {
 
                                 console.log('matchingGame:', matchingGame);
 
+
+
                                 let homeScore = 0;
                                 let awayScore = 0;
 
@@ -513,6 +526,10 @@ function ScorematchC() {
                                         console.error('Error parsing result data:', error);
                                     }
                                 }
+
+                                const formattedName = match.name.replace(/\s+/g, '-').replace(/-+/g, '-'); 
+
+                                console.log(formattedName);
 
                                 const [team1, team2] = match.name.split(" - ");
 
@@ -541,8 +558,8 @@ function ScorematchC() {
                                             <div className="league-match-data">
                                                 <div className="league-match-img">
                                                     <img src={matchlogo} style={{ width: '20px', height: 'auto' }} alt="match" />
-                                                    <Link to={`/football/match-summary/${match.id}`}>   <span>   {team1} </span> </Link>
-                                                  
+                                                    <Link to={`/football/match-summary/${formattedName}/${match.id}`}>   <span>   {team1} </span> </Link>
+
                                                 </div>
                                                 <div className="league-match-score"> {homeScore} </div>
                                             </div>
@@ -550,7 +567,7 @@ function ScorematchC() {
                                             <div className="league-match-data">
                                                 <div className="league-match-img">
                                                     <img src={matchlogo} style={{ width: '20px', height: 'auto' }} alt="match" />
-                                                    <Link to={`/football/match-summary/${match.id}`}>         <span>   {team2} </span>  </Link>
+                                                    <Link to={`/football/match-summary/${formattedName}/${match.id}`}>  <span>   {team2} </span>  </Link>
                                                 </div>
                                                 <div className="league-match-score"> {awayScore} </div>
                                             </div>
@@ -587,8 +604,8 @@ function ScorematchD() {
     const [gameMatch, setGameMatch] = useState(null);
 
     const AllcountryUrl = "/api/country";
-   
-     // console.log('AllLeagueUrl:', AllLeagueUrl);
+
+    // console.log('AllLeagueUrl:', AllLeagueUrl);
     // console.log('AllSeason', AllSeason);
     // console.log('LeagueGame', LeagueGame);
     // Fetch country data
@@ -703,7 +720,7 @@ function ScorematchD() {
     const fetchGameDetails = (matchId) => {
         const LeagueGame = `/api/game/${matchId}`;
 
-        console.log("LeagueGameURL",LeagueGame);
+        console.log("LeagueGameURL", LeagueGame);
 
         fetch(LeagueGame, { method: 'POST' })
             .then(response => response.json())
@@ -761,7 +778,10 @@ function ScorematchD() {
                                     {matchingCountry ? matchingCountry.display_name : (league ? league.country_code : '')}
                                 </span>
                                 <h3 className="text-slide">
-                                <Link to={`/football/leaguelist/${league.id}`}>    {league.display_name} </Link>
+                                    <Link to={`/football/${league.display_name.replace(/\s+/g, '-')}/${league.id}`}>
+                                        {league.display_name}
+                                    </Link>
+
                                 </h3>
                             </div>
                         </div>
@@ -794,6 +814,10 @@ function ScorematchD() {
                                     }
                                 }
 
+                                const formattedName = match.name.replace(/\s+/g, '-').replace(/-+/g, '-'); 
+
+                                console.log(formattedName);
+
                                 const [team1, team2] = match.name.split(" - ");
 
                                 const utcDateString = match.date.replace(' ', 'T') + 'Z'; // Convert to a valid ISO date format
@@ -821,8 +845,8 @@ function ScorematchD() {
                                             <div className="league-match-data">
                                                 <div className="league-match-img">
                                                     <img src={matchlogo} style={{ width: '20px', height: 'auto' }} alt="match" />
-                                                    <Link to={`/football/match-summary/${match.id}`}>   <span>   {team1} </span> </Link>
-                                                  
+                                                    <Link to={`/football/match-summary/${formattedName}/${match.id}`}> <span>   {team1} </span> </Link>
+
                                                 </div>
                                                 <div className="league-match-score"> {homeScore} </div>
                                             </div>
@@ -830,7 +854,7 @@ function ScorematchD() {
                                             <div className="league-match-data">
                                                 <div className="league-match-img">
                                                     <img src={matchlogo} style={{ width: '20px', height: 'auto' }} alt="match" />
-                                                    <Link to={`/football/match-summary/${match.id}`}>         <span>   {team2} </span>  </Link>
+                                                    <Link to={`/football/match-summary/${formattedName}/${match.id}`}>    <span>   {team2} </span>  </Link>
                                                 </div>
                                                 <div className="league-match-score"> {awayScore} </div>
                                             </div>

@@ -33,9 +33,10 @@ function App() {
           <Route path="/basketball" element={<BasketBall/>} />
           <Route path="/iceHockey" element={<IceHockey/>} />
           <Route path="/amFootball" element={<AMFootball/>} />
-          <Route path="/football/leaguelist/:id" element={<Leaguelist />} />
-          <Route path="/football/leaguelist/matches/:id" element={<AllMatch />} />
-          <Route path="/football/match-summary/:id" element={<MatchSummary />} />
+          <Route path="/football/:display_name/:id" element={<Leaguelist />} />
+          <Route path="/football/matches/:id" element={<AllMatch />} />
+          <Route path="/football/match-summary/:formattedName/:id" element={<MatchSummary />} />
+          {/* <Route path="/football/:formattedName/:id" element={<MatchSummary />} /> */}
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

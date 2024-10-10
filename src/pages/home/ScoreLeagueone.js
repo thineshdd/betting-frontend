@@ -20,8 +20,8 @@ function ScoreLeagueone() {
     const [gameMatch, setGameMatch] = useState(null);
 
     const AllcountryUrl = "/api/country";
-   
-     // console.log('AllLeagueUrl:', AllLeagueUrl);
+
+    // console.log('AllLeagueUrl:', AllLeagueUrl);
     // console.log('AllSeason', AllSeason);
     // console.log('LeagueGame', LeagueGame);
     // Fetch country data
@@ -136,7 +136,7 @@ function ScoreLeagueone() {
     const fetchGameDetails = (matchId) => {
         const LeagueGame = `/api/game/${matchId}`;
 
-        console.log("LeagueGameURL",LeagueGame);
+        console.log("LeagueGameURL", LeagueGame);
 
         fetch(LeagueGame, { method: 'POST' })
             .then(response => response.json())
@@ -194,7 +194,10 @@ function ScoreLeagueone() {
                                     {matchingCountry ? matchingCountry.display_name : (league ? league.country_code : '')}
                                 </span>
                                 <h3 className="text-slide">
-                                <Link to={`/football/leaguelist/${league.id}`}>    {league.display_name} </Link>
+                                    <Link to={`/football/${league.display_name.replace(/\s+/g, '-')}/${league.id}`}>
+                                        {league.display_name}
+                                    </Link>
+
                                 </h3>
                             </div>
                         </div>
@@ -227,6 +230,10 @@ function ScoreLeagueone() {
                                     }
                                 }
 
+                                const formattedName = match.name.replace(/\s+/g, '-').replace(/-+/g, '-'); 
+
+                                console.log(formattedName);
+
                                 const [team1, team2] = match.name.split(" - ");
 
                                 const utcDateString = match.date.replace(' ', 'T') + 'Z'; // Convert to a valid ISO date format
@@ -254,8 +261,8 @@ function ScoreLeagueone() {
                                             <div className="league-match-data">
                                                 <div className="league-match-img">
                                                     <img src={matchlogo} style={{ width: '20px', height: 'auto' }} alt="match" />
-                                                    <Link to={`/football/match-summary/${match.id}`}>   <span>   {team1} </span> </Link>
-                                                  
+                                                    <Link to={`/football/match-summary/${formattedName}/${match.id}`}>  <span>   {team1} </span> </Link>
+
                                                 </div>
                                                 <div className="league-match-score"> {homeScore} </div>
                                             </div>
@@ -263,7 +270,7 @@ function ScoreLeagueone() {
                                             <div className="league-match-data">
                                                 <div className="league-match-img">
                                                     <img src={matchlogo} style={{ width: '20px', height: 'auto' }} alt="match" />
-                                                    <Link to={`/football/match-summary/${match.id}`}>         <span>   {team2} </span>  </Link>
+                                                    <Link to={`/football/match-summary/${formattedName}/${match.id}`}>  <span>   {team2} </span>  </Link>
                                                 </div>
                                                 <div className="league-match-score"> {awayScore} </div>
                                             </div>

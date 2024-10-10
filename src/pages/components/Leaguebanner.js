@@ -7,7 +7,7 @@ import leagueicon from '../../assets/imageapi/league-icon.png';
 import leaguebannerbal from '../../assets/imageapi/leaguebannerbal.png';
 
 function Leaguebanner({ setSelectedSeason, selectedSeason }) {
-    const { id } = useParams();
+    const { display_name, id } = useParams();
     const [league, setLeague] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -141,7 +141,7 @@ function Leaguebanner({ setSelectedSeason, selectedSeason }) {
                             />
                         </div>
                         <div className="league-content-list">
-                            <h4 className="league-heading">{league.display_name}</h4>
+                            <h4 className="league-heading">{league.display_name}   {selectedSeason ? ` ${selectedSeason.name}` : ''}</h4>
                             <div className="country-image mtb">
                                 <div className="country-image-span">
                                     <span>
@@ -154,7 +154,7 @@ function Leaguebanner({ setSelectedSeason, selectedSeason }) {
                                                 className="league-images-sub"
                                             />
                                         )}
-                                        {matchingCountry ? matchingCountry.display_name : league.country_code}
+                                        {matchingCountry ? matchingCountry.display_name : league.country_code}   
                                     </span>
                                 </div>
 

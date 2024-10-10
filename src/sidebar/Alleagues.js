@@ -73,12 +73,12 @@ const LeagueData = () => {
                         <div clasclassNames="accordion-leguelist" key={index}>
                             <div
                                 onClick={() => handleCountryClick(country)}
-                                style={{ cursor: 'pointer' }}  class="accordion-leguelist-heading"
+                                style={{ cursor: 'pointer' }} class="accordion-leguelist-heading"
                             >
                                 <div className="match-title-league">
-                                <span className="country-images">
+                                    <span className="country-images">
 
-                                {matchingCountry && (
+                                        {matchingCountry && (
                                             <img
                                                 src={`/bet-assets/site/image/country/${matchingCountry.code}.svg`}
                                                 alt={matchingCountry.display_name}
@@ -87,7 +87,7 @@ const LeagueData = () => {
                                                 className="country-icon"
                                             />
                                         )}
-                                </span>
+                                    </span>
                                     {matchingCountry.display_name}
                                 </div>
                                 {/* Change the symbol based on whether the country is selected */}
@@ -99,11 +99,11 @@ const LeagueData = () => {
                             {/* Accordion: Show leagues only if the country is selected */}
                             {selectedCountry === country && (
                                 <div className="match-list-show">
-                                  
+
                                     <ul>
                                         {leagues.map((league, index) => (
                                             <li key={index} className="list-leagues">
-                                                <Link to={`/football/leaguelist/${league.id}`}>
+                                                <Link to={`/football/${league.display_name.replace(/\s+/g, '-')}/${league.id}`}>
                                                     {league.display_name}
                                                 </Link>
                                             </li>

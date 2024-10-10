@@ -79,9 +79,14 @@ function Matches({ selectedSeason }) {
                         const formatTime = theDate.toLocaleTimeString(undefined, timeOptions);
                         const formatDate = theDate.toLocaleDateString(undefined, yearOptions);
 
+                        
+                        const formattedName = match.name.replace(/\s+/g, '-').replace(/-+/g, '-'); 
+
+                        console.log("slug",formattedName);
+
 
                         return (
-                            <div className="accordion-flex" key={match.id}>
+                            <div className="accordion-flex" key={match.id} data-id={match.id}>
                                 <div className="accordion-flex-iteam accordion-flex-grow">
                                     <div className="accordion-favriote-row">
                                         <div className="accordion-sub-inner1">
@@ -105,7 +110,7 @@ function Matches({ selectedSeason }) {
                                     </div>
                                 </div>
                                 <div className="accordion-flex-iteam-third accordion-flex-grow">
-                                    <Link to={`/football/match-summary/${match.id}`}> View </Link>
+                                <Link to={`/football/match-summary/${formattedName}/${match.id}`}>  View </Link>
                                 </div>
                             </div>
                         );
@@ -117,7 +122,7 @@ function Matches({ selectedSeason }) {
                 </div> */}
 
                 <div className="more-match">
-                    <Link to={`/football/leaguelist/matches/${selectedSeason.id}`}>
+                    <Link to={`/football/matches/${selectedSeason.id}`}>
                         <button className="more-match-btn"> More Button </button>
                     </Link>
                 </div>
